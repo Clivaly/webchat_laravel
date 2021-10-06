@@ -13,39 +13,11 @@
                     <!-- list-users -->
                     <div class="w-3/12 bg-gray-300 bg-opacity-25 border-r border-gray-400 overflow-y-scroll">
                         <ul>
-                            <li class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
+                            <li
+                            v-for="user in users" :key="user.id"
+                            class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
                                 <p class="flex place-items-center">
-                                    Gleison
-                                    <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
-                                </p>
-                            </li>
-                            <li class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
-                                <p class="flex place-items-center">
-                                    Alexandre
-                                    <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
-                                </p>
-                            </li>
-                            <li class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
-                                <p class="flex place-items-center">
-                                    Rafael Borges
-                                    <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
-                                </p>
-                            </li>
-                            <li class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
-                                <p class="flex place-items-center">
-                                    Clivaly Rodolpho
-                                    <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
-                                </p>
-                            </li>
-                            <li class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
-                                <p class="flex place-items-center">
-                                    Nayara
-                                    <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
-                                </p>
-                            </li>
-                            <li class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
-                                <p class="flex place-items-center">
-                                    Cardoso
+                                    {{ user.name }}
                                     <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
                                 </p>
                             </li>
@@ -130,7 +102,7 @@
 
         mounted() {
             axios.get('api/users').then(response => {
-                console.log(response)
+                this.users = response.data.users
             })
         },
     })
