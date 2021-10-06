@@ -121,5 +121,17 @@
         components: {
             AppLayout,
         },
+
+        data(){
+            return{
+                users: []
+            }
+        },
+
+        mounted() {
+            axios.get('api/users').then(response => {
+                console.log(response)
+            })
+        },
     })
 </script>

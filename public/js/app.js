@@ -20576,6 +20576,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
   components: {
     AppLayout: _Layouts_AppLayout_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      users: []
+    };
+  },
+  mounted: function mounted() {
+    axios.get('api/users').then(function (response) {
+      console.log(response);
+    });
   }
 }));
 
