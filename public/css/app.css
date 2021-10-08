@@ -1555,6 +1555,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
 }
+.bg-indigo-200 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(199, 210, 254, var(--tw-bg-opacity));
+}
 .bg-blue-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(96, 165, 250, var(--tw-bg-opacity));
@@ -1565,6 +1569,9 @@ select {
 }
 .bg-opacity-25 {
 	--tw-bg-opacity: 0.25;
+}
+.bg-opacity-50 {
+	--tw-bg-opacity: 0.5;
 }
 .bg-cover {
 	background-size: cover;
@@ -1904,6 +1911,16 @@ select {
 }
 .ease-in {
 	transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+.messageFromMe {
+	--tw-bg-opacity: 1;
+	background-color: rgba(99, 102, 241, var(--tw-bg-opacity));
+	--tw-bg-opacity: 0.5;
+}
+.messageToMe {
+	--tw-bg-opacity: 1;
+	background-color: rgba(107, 114, 128, var(--tw-bg-opacity));
+	--tw-bg-opacity: 0.5;
 }
 .hover\:cursor-pointer:hover {
 	cursor: pointer;
@@ -2331,4 +2348,5 @@ select {
 		padding-right: 2rem;
 	}
 }
+
 

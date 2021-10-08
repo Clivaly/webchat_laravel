@@ -15,6 +15,8 @@
                         <ul>
                             <li
                             v-for="user in users" :key="user.id"
+                            @click="() => {loadMessage(user.id)}"
+                            :class="(userActive && userActive.id == user.id) ? 'bg-indigo-200 bg-opacity-50' : ''"
                             class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
                                 <p class="flex place-items-center">
                                     {{ user.name }}
@@ -29,52 +31,32 @@
 
                       <!-- message -->
                     <div class="w-full p-6 flex flex-col overflow-y-scroll">
-                          <div class="w-full mb-3 text-right">
-                              <p class="inline-block p-2 rounded-md bg-indigo-300" style="max-width: 75%;">
-                                  Olá!
-                              </p>
-                               <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:00</span>
+                          <div
+                              v-for="message in messages" :key="message.id"
+                              :class="(message.from == $page.props.user.id) ? 'text-right' : ''"
+                              class="w-full mb-3 ">
+                              <p
+                                :class="(message.from == $page.props.user.id) ? 'messageFromMe' : 'messageToMe'"
+                                class="inline-block p-2 rounded-md bg-indigo-300" style="max-width: 75%;">
+                                {{ message.content }}
+                             </p>
+                               <span class="block mt-1 text-xs text-gray-500">{{ message.created_at }}</span>
                           </div>
+
                           <div class="w-full mb-3">
                               <p class="inline-block p-2 rounded-md bg-gray-300" style="max-width: 75%;">
                                   Oi!
                               </p>
                               <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:01</span>
                           </div>
-
-                          <div class="w-full mb-3 text-right">
-                              <p class="inline-block p-2 rounded-md bg-indigo-300" style="max-width: 75%;">
-                                  Olá!
-                              </p>
-                               <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:01</span>
-                          </div>
-                          <div class="w-full mb-3">
-                              <p class="inline-block p-2 rounded-md bg-gray-300" style="max-width: 75%;">
-                                  Oi!
-                              </p>
-                              <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:02</span>
-                          </div>
-
-                          <div class="w-full mb-3 text-right">
-                              <p class="inline-block p-2 rounded-md bg-indigo-300" style="max-width: 75%;">
-                                  Olá!
-                              </p>
-                               <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:03</span>
-                          </div>
-                          <div class="w-full mb-3">
-                              <p class="inline-block p-2 rounded-md bg-gray-300" style="max-width: 75%;">
-                                  Oi!
-                              </p>
-                              <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:04</span>
-                          </div>
                     </div>
 
                        <!-- form -->
-                    <div class="w-full bg-gray-200 bg-opacity-25 p-6 border-t border-gray-200">
-                        <form>
+                    <div v-if="userActive" class="w-full bg-gray-200 bg-opacity-25 p-6 border-t border-gray-200">
+                        <form v-on:submit.prevent="sendMessage">
                            <div class="flex rounded-md overflow-hidden border border-gray-300">
-                               <input type="text" class="flex-1 rounded-l px-4 py-2 text-sm focus:outline-none">
-                               <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2">Enviar</button>
+                            <input v-model="message" type="text" class="flex-1 rounded-l px-4 py-2 text-sm focus:outline-none">
+                            <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2">Enviar</button>
                            </div>
                         </form>
                         </div>
@@ -96,7 +78,53 @@
 
         data(){
             return{
-                users: []
+                users: [],
+                messages: [],
+                userActive: null,
+                message: ''
+            }
+        },
+        methods: {
+            scrollToBottom: function() {
+                if(this.message.length){
+                    document.querySelectorAll('.message:last-child')[0].scrollIntoView()
+                }
+            },
+
+
+            loadMessage: async function(userId) {
+
+                axios.get(`api/users/${userId}`).then(response => {
+                    this.userActive = response.data.user
+                })
+
+                await axios.get(`api/messages/${userId}`).then(response => {
+                    this.messages = response.data.messages
+                })
+
+                this.scrollToBottom()
+            },
+
+            sendMessage: async function() {
+
+                await axios.post('api/messages/store', {
+                    'content': this.message,
+                    'to': this.userActive.id,
+                }).then(response => {
+
+                    this.messages.push({
+                        'from': '1',
+                        'to': this.userActive.id,
+                        'content': this.message,
+                        'created_at': new Date().toISOString(),
+                        'updated_at': new Date().toISOString()
+                    })
+
+                    this.message = ''
+                })
+
+                this.scrollToBottom()
+
             }
         },
 
@@ -104,6 +132,7 @@
             axios.get('api/users').then(response => {
                 this.users = response.data.users
             })
-        },
+        }
     })
 </script>
+
