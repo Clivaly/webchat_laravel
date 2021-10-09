@@ -3,21 +3,9 @@ require('./bootstrap');
 import { createApp, h, } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
+import createStore from './store';
 
-// import moment from 'moment';
-
-// moment.locale("pt-br");
-
-// Vue.filter('formatDate', function(value) {
-//     if(value) {
-//         return moment(value).format('DD/MM/YYYY HH:mm')
-//     }
-// });
-
-// Vue.mixin({methods: { route } });
-// Vue.use(InertiaApp);
-// Vue.use(InertiaForm);
-// Vue.use(PortalVue);
+createStore.dispatch('userStateAction');
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
