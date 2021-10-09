@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Vuex, { createStore } from 'vuex';
+import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate'
 
 
@@ -14,13 +14,13 @@ export default createStore({
     },
 
     actions: {
-        userStateAction: () => {
+        userStateAction: ({commit}) => {
             axios.get('api/user/me').then(response => {
                 const userResponse = response.data.user
                 commit('setUserState', userResponse)
-                console.log(response)
             })
         }
     },
+    plugins: [createPersistedState() ]
 })
 

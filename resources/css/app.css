@@ -3,6 +3,9 @@
 @import 'tailwindcss/utilities';
 
 
+
+
+
 .messageFromMe{
     @apply bg-indigo-500 bg-opacity-50
 }
@@ -10,4 +13,3 @@
 .messageToMe{
     @apply bg-gray-500 bg-opacity-50
 }
-
