@@ -20947,7 +20947,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     scrollToBottom: function scrollToBottom() {
       if (this.message.length) {
-        document.querySelectorAll('.message:last-child')[0].scrollIntoView();
+        document.querySelectorAll('.message:last-child')[1].scrollIntoView();
       }
     },
     loadMessage: function () {
@@ -21031,6 +21031,51 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     axios.get('api/users').then(function (response) {
       _this3.users = response.data.users;
     });
+    Echo["private"]("user.".concat(this.user.id)).listen('.SendMessage', /*#__PURE__*/function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(e) {
+        var user;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!(_this3.userActive && _this3.userActive.id == e.message.from)) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 3;
+                return _this3.messages.push(e.message);
+
+              case 3:
+                _this3.scrollToBottom();
+
+                _context3.next = 8;
+                break;
+
+              case 6:
+                user = _this3.users.filter(function (user) {
+                  if (user.id === e.message.from) {
+                    return user;
+                  }
+                });
+
+                if (user) {
+                  // user.notification = true [deveria ser reativo mas não irá funcionar... então...]
+                  vue__WEBPACK_IMPORTED_MODULE_1__["default"].useAttrs(user[0], notification, true);
+                }
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      return function (_x2) {
+        return _ref.apply(this, arguments);
+      };
+    }());
   }
 }));
 
@@ -24871,13 +24916,10 @@ var _hoisted_6 = ["onClick"];
 var _hoisted_7 = {
   "class": "flex place-items-center"
 };
-
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_8 = {
+  key: 0,
   "class": "ml-2 w-2 h-2 bg-blue-400 rounded-full"
-}, null, -1
-/* HOISTED */
-);
-
+};
 var _hoisted_9 = {
   "class": "w-9/12 flex flex-col justify-between"
 };
@@ -24887,29 +24929,15 @@ var _hoisted_10 = {
 var _hoisted_11 = {
   "class": "block mt-1 text-xs text-gray-500"
 };
-
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "w-full mb-3"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "inline-block p-2 rounded-md bg-gray-300",
-  style: {
-    "max-width": "75%"
-  }
-}, " Oi! "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "block mt-1 text-xs text-gray-500"
-}, "05/10/2021 11:01")], -1
-/* HOISTED */
-);
-
-var _hoisted_13 = {
+var _hoisted_12 = {
   key: 0,
   "class": "w-full bg-gray-200 bg-opacity-25 p-6 border-t border-gray-200"
 };
-var _hoisted_14 = {
+var _hoisted_13 = {
   "class": "flex rounded-md overflow-hidden border border-gray-300"
 };
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
   "class": "bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2"
 }, "Enviar", -1
@@ -24935,7 +24963,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.userActive && _ctx.userActive.id == user.id ? 'bg-indigo-200 bg-opacity-50' : '', "p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50 hover:cursor-pointer"])
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name) + " ", 1
         /* TEXT */
-        ), _hoisted_8])], 10
+        ), user.notification ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_8)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 10
         /* CLASS, PROPS */
         , _hoisted_6);
       }), 128
@@ -24958,11 +24986,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         );
       }), 128
       /* KEYED_FRAGMENT */
-      )), _hoisted_12]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form "), _ctx.userActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form "), _ctx.userActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
         onSubmit: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return _ctx.sendMessage && _ctx.sendMessage.apply(_ctx, arguments);
         }, ["prevent"]))
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
           return _ctx.message = $event;
         }),
@@ -24970,7 +24998,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "flex-1 rounded-l px-4 py-2 text-sm focus:outline-none"
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.message]]), _hoisted_15])], 32
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.message]]), _hoisted_14])], 32
       /* HYDRATE_EVENTS */
       )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])];
     }),
@@ -26357,7 +26385,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
+  key: "myappkey",
   cluster: "mt1",
   forceTLS: false,
   wsHost: window.location.hostname,

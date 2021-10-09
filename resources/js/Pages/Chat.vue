@@ -20,7 +20,7 @@
                             class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-indigo-200 hover:bg-indigo-200 hover:opacity-50  hover:cursor-pointer">
                                 <p class="flex place-items-center">
                                     {{ user.name }}
-                                    <span class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
+                                    <span v-if="user.notification" class="ml-2 w-2 h-2 bg-blue-400 rounded-full"></span>
                                 </p>
                             </li>
                         </ul>
@@ -42,13 +42,6 @@
                              </p>
                                <span class="block mt-1 text-xs text-gray-500">{{ message.created_at }}</span>
                           </div>
-
-                          <div class="w-full mb-3">
-                              <p class="inline-block p-2 rounded-md bg-gray-300" style="max-width: 75%;">
-                                  Oi!
-                              </p>
-                              <span class="block mt-1 text-xs text-gray-500">05/10/2021 11:01</span>
-                          </div>
                     </div>
 
                        <!-- form -->
@@ -68,7 +61,7 @@
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
+    import Vue, { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
 
     import createStore from '../store'
@@ -95,7 +88,7 @@
         methods: {
             scrollToBottom: function() {
                 if(this.message.length){
-                    document.querySelectorAll('.message:last-child')[0].scrollIntoView()
+                    document.querySelectorAll('.message:last-child')[1].scrollIntoView()
                 }
             },
 
@@ -139,6 +132,25 @@
         mounted() {
             axios.get('api/users').then(response => {
                 this.users = response.data.users
+            })
+
+            Echo.private(`user.${this.user.id}`).listen('.SendMessage', async (e) => {
+
+                if(this.userActive && this.userActive.id == e.message.from) {
+                    await this.messages.push(e.message)
+                    this.scrollToBottom()
+                } else {
+                    const user =  this.users.filter((user) => {
+                        if(user.id === e.message.from) {
+                            return user
+                        }
+                    })
+
+                    if(user) {
+                        // user.notification = true [deveria ser reativo mas não irá funcionar... então...]
+                        Vue.useAttrs(user[0], notification, true)
+                    }
+                }
             })
         }
     })
